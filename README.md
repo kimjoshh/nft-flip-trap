@@ -21,7 +21,7 @@ The trap helps identify front-runners or bots that exploit NFT launches.
 ## 🛠 Technical Implementation (PoC in Solidity)
 
 ### 📄 `NFTFlipTrap.sol`
-
+{
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -100,6 +100,7 @@ contract NFTFlipTrap {
         return value < 10 ? bytes1(value + 48) : bytes1(value + 87);
     }
 }
+}
 
 ## 📬 Contract Address
 0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d
@@ -118,22 +119,25 @@ Use Foundry or Remix to deploy the contract. Ensure Drosera operator is running.
 2. Simulate Events
 Emit logs that resemble:
 
-solidity
-Copy code
+``solidity
+{
 logs[0] = Transfer(address(0), A, 1);   // Mint
 logs[1] = Transfer(A, B, 1);           // Flip
+}
 
 3. Run Foundry Test
 bash
-Copy code
+{
 forge test
+}
 
 4. Check Response
-Expected output:
 
-Copy code
+Expected output:
+{
 should = true;
 reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBBB...";
+}
 
 ## 🧠 Example Use Cases
 Detect sybil bot NFT farming
@@ -174,10 +178,11 @@ Encourage others to fork and improve
 
 ## 📦 drosera.toml
 toml
-Copy code
+{
 name = "NFT Flip Trap"
 description = "Detects suspicious NFT flipping behavior after minting and immediate resale."
 contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d"
+}
 ## 👤 Author
 KIM JOSH
 Submitted for the Drosera Network Trap Contest
