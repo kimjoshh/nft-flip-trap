@@ -37,8 +37,6 @@ The trap helps identify front-runners or bots that exploit NFT launches.
 
 3. **Secure limited-edition or whitelist-only drops**
 
-## 📘 How to Use This Trap in Production
-
 ---
 
 ## 🛠 Technical Implementation (PoC in Solidity)
@@ -182,7 +180,9 @@ Expected output:
 should = true;
 reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBBB...";
 ```
+---
 
+## 📘 How to Use This Trap in Production
 ### 🔧 Step 1: Configure Drosera Operator
 - Set up relay to call collect() and shouldRespond()
 
@@ -212,10 +212,14 @@ reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBB
 
 - Encourage others to fork and improve
 
+---
+
 ## 👤 Author
 KIM JOSH(oaksosks)
 
 GitHub: github.com/kimjoshh
+
+---
 
 ## 📚 Resources
 **Drosera Network**
@@ -223,3 +227,5 @@ GitHub: github.com/kimjoshh
 **Holesky Etherscan**
 
 **Foundry Book**
+
+---
