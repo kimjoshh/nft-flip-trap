@@ -22,7 +22,7 @@ The trap helps identify front-runners or bots that exploit NFT launches.
 
 ### 📄 `NFTFlipTrap.sol`
 
-<pre> ```solidity 
+```solidity 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -100,7 +100,8 @@ contract NFTFlipTrap {
     function _toAsciiChar(uint8 value) internal pure returns (bytes1) {
         return value < 10 ? bytes1(value + 48) : bytes1(value + 87);
     }
-} ``` </pre>
+}
+```
 
 ## 📬 Contract Address
 <pre> 0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d </pre>
