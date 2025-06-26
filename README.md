@@ -33,9 +33,7 @@ The `shouldRespond(bytes[] calldata data)` function receives encoded logs from t
 
 ```solidity
 function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
-Event Structure
-solidity
-Copy code
+
 struct TransferEvent {
     address from;
     address to;
@@ -43,7 +41,7 @@ struct TransferEvent {
 }
 These logs mimic the Transfer event emitted by ERC721-compatible NFT contracts.
 
-🔎 Detection Logic
+# 🔎 Detection Logic
 Decode TransferEvent[] from data[0]
 
 For every event where from == address(0) (mint):
@@ -54,7 +52,7 @@ Same tokenId
 
 from == minter
 
-to != minter && to != address(0) (not burn)
+to != minter && to != address(0) (not a burn)
 
 If found, respond:
 
@@ -64,7 +62,7 @@ return (
     true,
     bytes("Suspicious: Token X minted to 0x... and immediately flipped to 0x...")
 );
-If no suspicious pattern, return false.
+If no suspicious pattern is found, return false.
 
 🧪 Example: Test Simulation
 Simulated logs in test:
