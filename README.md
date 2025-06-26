@@ -109,11 +109,11 @@ contract NFTFlipTrap {
 ```
 
 ## ✅ What It Solves
-Detects bots that immediately flip NFTs after minting
+1. **Detects bots that immediately flip NFTs after minting**
 
-Helps protocols monitor suspicious trading behavior
+2. **Helps protocols monitor suspicious trading behavior**
 
-Can be used in launchpad contracts, NFT marketplaces, or curated drops
+3. **Can be used in launchpad contracts, NFT marketplaces, or curated drops**
 
 ## 🧪 Deployment and Testing Instructions
 1. Deploy to Holesky testnet
@@ -135,19 +135,20 @@ forge test
 4. Check Response
 
 Expected output:
-```solidity 
+<prev> 
 should = true;
 reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBBB...";
-```
+</prev>
 
 ## 🧠 Example Use Cases
-Detect sybil bot NFT farming
+1. **Detect sybil bot NFT farming**
 
-Monitor high-volume NFT flippers
+2. **Monitor high-volume NFT flippers**
 
-Secure limited-edition or whitelist-only drops
+3. **Secure limited-edition or whitelist-only drops**
 
-## 🚀 Next Steps
+## 📘 How to Use This Trap in Production
+
 ### 🔧 Step 1: Configure Drosera Operator
 Set up relay to call collect() and shouldRespond()
 
@@ -186,7 +187,6 @@ contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d"
 
 ## 👤 Author
 KIM JOSH
-Submitted for the Drosera Network Trap Contest
 GitHub: github.com/kimjoshh
 
 ## 📚 Resources
