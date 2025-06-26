@@ -8,7 +8,10 @@ This guide walks you through deploying the NFTFlipTrap smart contract on the Hol
 
 ### Install dependencies:
 ```bash
-sudo apt update && sudo apt install git curl unzip -y
+sudo apt-get update && sudo apt-get upgrade -y
+```
+```bash
+sudo apt install curl ufw iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev  -y
 ```
 
 ### Install Foundry:
