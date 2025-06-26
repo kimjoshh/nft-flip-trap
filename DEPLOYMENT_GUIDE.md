@@ -36,11 +36,14 @@ nft-flip-trap/
 └── README.md                      # Documentation
 ```
 
-Add your trap in src/NFTFlipTrap.sol
+**Smart contract:**
+- Edit or create src/NFTFlipTrap.sol
 
-Add a test file in test/NFTFlipTrapTest.t.sol
+**Test:**
+- Write a test file at test/NFTFlipTrapTest.t.sol
 
-Add a deploy script in scripts/DeployNFTFlipTrap.s.sol
+**Deployment script:**
+- Create scripts/DeployNFTFlipTrap.s.sol
 
 ## 4️⃣ Run Unit Tests
 ```bash
