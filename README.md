@@ -21,7 +21,6 @@ The trap helps identify front-runners or bots that exploit NFT launches.
 ## 🛠 Technical Implementation (PoC in Solidity)
 
 ### 📄 `NFTFlipTrap.sol`
-{
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -194,3 +193,10 @@ Drosera Network
 Holesky Etherscan
 
 Foundry Book
+
+✅ drosera.toml
+toml
+Copy code
+name = "NFT Flip Trap"
+description = "Detects suspicious NFT flipping behavior after minting and immediate resale."
+contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d"
