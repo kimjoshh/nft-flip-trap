@@ -1,87 +1,130 @@
-# Drosera Trap Foundry Template
+# 🧠 NFT Flip Trap
 
-This repo is for quickly bootstrapping a new Drosera project. It includes instructions for creating your first trap, deploying it to the Drosera network, and updating it on the fly.
+🚨 Trap for detecting suspicious NFT flipping behavior immediately after minting  
+✅ Deployed and verified on [Holesky Etherscan](https://holesky.etherscan.io/address/0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d)
 
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://dev.drosera.io "Project documentation")
+---
 
-## Configure dev environment
+## 📜 Overview
 
-```bash
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
+This Drosera trap contract detects suspicious behavior where an NFT is:
 
-# The trap-foundry-template utilizes node modules for dependency management
-# install Bun (optional)
-curl -fsSL https://bun.sh/install | bash
+1. **Minted** (from address `0x0`) to a wallet  
+2. **Flipped immediately** (sent to another wallet right after minting)
 
-# install node modules
-bun install
+Useful to catch potential botting, front-running, or wash trading activities that occur rapidly after minting.
 
-# install vscode (optional)
-# - add solidity extension JuanBlanco.solidity
+---
 
-# install drosera-cli
-curl -L https://app.drosera.io/install | bash
-droseraup
-```
+## 🧠 How It Works
 
-open the VScode preferences and Select `Soldity: Change workpace compiler version (Remote)`
+The `shouldRespond(bytes[] calldata data)` function receives encoded logs from the Drosera relay node. It:
 
-Select version `0.8.12`
+1. Decodes the log data into a list of `TransferEvent` structs  
+2. For each mint event:
+   - Looks for a following transfer of the same token ID from the same minter  
+3. If such a flip is detected, it returns:
+   - `should = true`
+   - `reason = Suspicious: Token X minted to 0x... and immediately flipped to 0x...`
 
-## Quick Start
+---
 
-### Hello World Trap
+## 🔍 Trap Contract Interface
 
-The drosera.toml file is configured to deploy a simple "Hello, World!" trap. Ensure the drosera.toml file is set to the following configuration:
+```solidity
+function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
+Event Structure
+solidity
+Copy code
+struct TransferEvent {
+    address from;
+    address to;
+    uint256 tokenId;
+}
+These logs mimic the Transfer event emitted by ERC721-compatible NFT contracts.
 
-```toml
-response_contract = "0xdA890040Af0533D98B9F5f8FE3537720ABf83B0C"
-response_function = "helloworld(string)"
-```
+🔎 Detection Logic
+Decode TransferEvent[] from data[0]
 
-To deploy the trap, run the following commands:
+For every event where from == address(0) (mint):
 
-```bash
-# Compile the Trap
-forge build
+Loop through subsequent logs to find:
 
-# Deploy the Trap
-DROSERA_PRIVATE_KEY=0x.. drosera apply
-```
+Same tokenId
 
-After successfully deploying the trap, the CLI will add an `address` field to the `drosera.toml` file.
+from == minter
 
-Congratulations! You have successfully deployed your first trap!
+to != minter && to != address(0) (not burn)
 
-### Response Trap
+If found, respond:
 
-You can then update the trap by changing its logic and recompling it or changing the path field in the `drosera.toml` file to point to the Response Trap.
+solidity
+Copy code
+return (
+    true,
+    bytes("Suspicious: Token X minted to 0x... and immediately flipped to 0x...")
+);
+If no suspicious pattern, return false.
 
-The Response Trap is designed to trigger a response at a specific block number. To test the Response Trap, pick a future block number and update the Response Trap.
-Specify a response contract address and function signature in the drosera.toml file to the following:
+🧪 Example: Test Simulation
+Simulated logs in test:
 
-```toml
-response_contract = "0xdA890040Af0533D98B9F5f8FE3537720ABf83B0C"
-response_function = "responseCallback(uint256)"
-```
+solidity
+Copy code
+logs[0] = Transfer(address(0), A, 1);   // Mint
+logs[1] = Transfer(A, B, 1);           // Immediate flip
+Trap detects the pattern and returns:
 
-Finally, deploy the Response Trap by running the following commands:
+solidity
+Copy code
+should = true;
+reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBBB...";
+🛠️ Contract Details
+Item	Value
+Contract Name	NFTFlipTrap
+Network	Holesky
+Address	0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d
+Verified	✅ Yes
+Solidity	^0.8.20
+EVM Version	Cancun
+Framework	Foundry (forge, forge-std)
 
-```bash
-# Compile the Trap
-forge build
+🔬 Testing
+Unit tests using Foundry:
 
-# Deploy the Trap
-DROSERA_PRIVATE_KEY=0x.. drosera apply
-```
+✅ Flipping is detected correctly
 
-> Note: The `DROSERA_PRIVATE_KEY` environment variable can be used to deploy traps. You can also set it in the drosera.toml file as `private_key = "0x.."`.
+✅ Non-flipping transfers are ignored
 
-## Testing
+✅ reason values are descriptive
 
-Example tests are included in the `tests` directory. They simulate how Drosera Operators execute traps and determine if a response should be triggered. To run the tests, execute the following command:
+To run tests:
 
-```bash
+bash
+Copy code
 forge test
-```
+📦 drosera.toml
+toml
+Copy code
+name = "NFT Flip Trap"
+description = "Detects suspicious NFT flipping behavior after minting and immediate resale."
+contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d"
+👤 Author
+Fero Kortase
+Submitted for the Drosera Network Trap Contest
+GitHub: github.com/yourhandle
+Twitter: @yourhandle (optional)
+
+💡 Future Improvements
+Add time-window constraint (e.g., flips within 2 blocks)
+
+Support batch mints (ERC721A-style)
+
+Emit Drosera-compatible event output
+
+🔗 Resources
+Drosera Network
+
+Holesky Etherscan
+
+Foundry Docs
