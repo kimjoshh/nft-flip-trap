@@ -1,5 +1,8 @@
 # 🧠 NFT Flip Trap
 
+🚨 A Drosera trap contract to detect suspicious NFT flipping behavior immediately after minting  
+✅ Deployed and verified on [Holesky Etherscan](https://holesky.etherscan.io/address/0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d)
+
 ---
 
 ## 📌 Problem
@@ -15,6 +18,26 @@ Detect any suspicious behavior where:
 2. The same NFT is **immediately flipped** to another address by the minter
 
 The trap helps identify front-runners or bots that exploit NFT launches.
+
+---
+
+## ✅ What It Solves
+1. **Detects bots that immediately flip NFTs after minting**
+
+2. **Helps protocols monitor suspicious trading behavior**
+
+3. **Can be used in launchpad contracts, NFT marketplaces, or curated drops**
+
+---
+
+## 🧠 Example Use Cases
+1. **Detect sybil bot NFT farming**
+
+2. **Monitor high-volume NFT flippers**
+
+3. **Secure limited-edition or whitelist-only drops**
+
+## 📘 How to Use This Trap in Production
 
 ---
 
@@ -135,18 +158,6 @@ contract NFTFlipTrap {
 }
 ```
 
-## 📬 Contract Address
-```
-0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d
-```
-
-## ✅ What It Solves
-1. **Detects bots that immediately flip NFTs after minting**
-
-2. **Helps protocols monitor suspicious trading behavior**
-
-3. **Can be used in launchpad contracts, NFT marketplaces, or curated drops**
-
 ## 🧪 Deployment and Testing Instructions
 1. Deploy to Holesky testnet
 Use Foundry or Remix to deploy the contract. Ensure Drosera operator is running.
@@ -171,15 +182,6 @@ Expected output:
 should = true;
 reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBBB...";
 ```
-
-## 🧠 Example Use Cases
-1. **Detect sybil bot NFT farming**
-
-2. **Monitor high-volume NFT flippers**
-
-3. **Secure limited-edition or whitelist-only drops**
-
-## 📘 How to Use This Trap in Production
 
 ### 🔧 Step 1: Configure Drosera Operator
 - Set up relay to call collect() and shouldRespond()
@@ -209,13 +211,6 @@ reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBB
 - Publish to GitHub & Drosera registry
 
 - Encourage others to fork and improve
-
-## 📦 drosera.toml
-```toml 
-name = "NFT Flip Trap"
-description = "Detects suspicious NFT flipping behavior after minting and immediate resale."
-contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d"
-```
 
 ## 👤 Author
 KIM JOSH
