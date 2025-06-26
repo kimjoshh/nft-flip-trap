@@ -219,6 +219,7 @@ contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d"
 
 ## 👤 Author
 KIM JOSH
+
 GitHub: github.com/kimjoshh
 
 ## 📚 Resources
