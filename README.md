@@ -213,7 +213,7 @@ reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBB
 - Encourage others to fork and improve
 
 ## 👤 Author
-KIM JOSH
+KIM JOSH(oaksosks)
 
 GitHub: github.com/kimjoshh
 
