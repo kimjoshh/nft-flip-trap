@@ -104,7 +104,9 @@ contract NFTFlipTrap {
 ```
 
 ## 📬 Contract Address
-<pre> 0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d </pre>
+```
+0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d
+```
 
 ## ✅ What It Solves
 Detects bots that immediately flip NFTs after minting
@@ -120,20 +122,23 @@ Use Foundry or Remix to deploy the contract. Ensure Drosera operator is running.
 2. Simulate Events
 Emit logs that resemble:
 
-<pre> ```solidity
+```solidity
 logs[0] = Transfer(address(0), A, 1);   // Mint
-logs[1] = Transfer(A, B, 1);           // Flip ``` </pre>
+logs[1] = Transfer(A, B, 1);           // Flip
+```
 
 3. Run Foundry Test
-<pre> ```bash 
-forge test ``` </pre>
+```bash 
+forge test
+```
 
 4. Check Response
 
 Expected output:
-<pre> ```solidity 
+```solidity 
 should = true;
-reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBBB..."; ``` </pre>
+reason = "Suspicious: Token 1 minted to 0xAAA... and immediately flipped to 0xBBB...";
+```
 
 ## 🧠 Example Use Cases
 Detect sybil bot NFT farming
@@ -173,10 +178,11 @@ Publish to GitHub & Drosera registry
 Encourage others to fork and improve
 
 ## 📦 drosera.toml
-<pre> ```toml 
+```toml 
 name = "NFT Flip Trap"
 description = "Detects suspicious NFT flipping behavior after minting and immediate resale."
-contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d" ``` </pre>
+contract_address = "0x3e0A13AD70b1e705f4cEfDccd5dDd199953Cc41d"
+```
 
 ## 👤 Author
 KIM JOSH
