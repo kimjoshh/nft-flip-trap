@@ -73,7 +73,7 @@ contract NFTFlipTrap is ITrap {
 
     constructor() {
         // Hard-coded target NFT contract (replace with actual)
-        nftContract = address(0x001234567890abcdef1234567890abcdef12345678);
+        nftContract = 0x1234567890abcdef1234567890abcdef12345678;
     }
 
     function collect() external view override returns (bytes memory) {
