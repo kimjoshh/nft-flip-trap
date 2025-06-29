@@ -301,7 +301,7 @@ Implements Drosera’s standard interface:
 ```solidity
 interface ITrap {
     function collect() external view returns (bytes memory);
-    function shouldRespond(bytes[] calldata data) external returns (bool, bytes memory);
+    function shouldRespond(bytes[] calldata data) external pure returns (bool, bytes memory);
 }
 ```
 
@@ -332,7 +332,7 @@ nftContract = 0x1234567890abcdef1234567890abcdef12345678; // replace before depl
 
 ```bash
 forge script script/DeployNFTFlipTrap.s.sol \
-  --rpc-url $HOLESKY_RPC_URL \
+  --rpc-url $HOODI_RPC_URL \
   --private-key $PRIVATE_KEY \
   --broadcast
 ```
