@@ -1,87 +1,160 @@
-# Drosera Trap Foundry Template
+# NFTFlipTrap
 
-This repo is for quickly bootstrapping a new Drosera project. It includes instructions for creating your first trap, deploying it to the Drosera network, and updating it on the fly.
+A smart contract trap module for detecting suspicious NFT flipping behavior shortly after minting. Built for integration with the [Drosera Network](https://github.com/drosera-network).
 
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://dev.drosera.io "Project documentation")
+---
 
-## Configure dev environment
+## 📦 Overview
+
+`NFTFlipTrap` analyzes `Transfer` logs of ERC-721 tokens to identify "flip after mint" patterns — where a freshly minted NFT is immediately resold or transferred to another wallet.
+
+The contract is designed to support two modes:
+
+* ✅ **Non-Emit Version** (simpler, pure-function, testnet-friendly)
+* 🔁 **Emit Version** (observable, indexable, production-ready)
+
+---
+
+## 🎯 Use Cases
+
+### 🔍 NFT Marketplace Monitoring
+
+Detect wallets that mint NFTs and flip them within the same block or shortly after minting, which may indicate:
+
+* Wash trading
+* Sybil attacks
+* Market manipulation
+
+### 🔐 Trap Deployment in Drosera
+
+Use `NFTFlipTrap` as a trap module in Drosera to:
+
+* Flag suspicious operators
+* Trigger automated slashing or investigation workflows
+
+### 🧪 Research and Simulation
+
+In testnets or simulation environments:
+
+* Evaluate minter/reseller behavior
+* Prototype anti-flip heuristics
+
+---
+
+## 🧠 Flip Detection Logic
+
+1. Detect an ERC-721 `Transfer` event from the zero address (mint).
+2. Check for a subsequent transfer of the **same `tokenId`** by the minter to another address.
+3. If found, flag as suspicious.
+
+---
+
+## 🔹 Non-Emit Version
+
+### ✅ Advantages
+
+* `shouldRespond()` is a `pure` function (reads no blockchain state).
+* No state changes (safe for simulations or local testing).
+* Gas efficient and lightweight.
+
+### 🧱 Key Contract Structure
+
+```solidity
+function shouldRespond(bytes[] calldata _data) external pure override returns (bool, bytes memory);
+```
+
+* Decodes encoded `TransferEvent[]` logs.
+* Checks for mint-and-flip pattern.
+* Returns `(true, reason)` if detected.
+
+### 📁 Example Reason Payload
+
+```solidity
+abi.encode(keccak256("FLIP_DETECTED"), tokenId, from, to);
+```
+
+---
+
+## 🔁 Emit Version
+
+### ✅ Advantages
+
+* Emits a `FlipDetected` event when a flip pattern is detected.
+* Easily trackable by indexers, analytics, or bots.
+* Suitable for production deployments.
+
+### 🔔 Event Declaration
+
+```solidity
+event FlipDetected(uint256 indexed tokenId, address indexed from, address indexed to);
+```
+
+### 🧱 Key Contract Structure
+
+```solidity
+function shouldRespond(bytes[] calldata _data) external override returns (bool, bytes memory) {
+    ...
+    emit FlipDetected(tokenId, from, to);
+    return (true, ...);
+}
+```
+
+* Emits on detection.
+* `shouldRespond()` is no longer `pure` or `view` due to the `emit`.
+
+---
+
+## ✍️ Interface
+
+Implements Drosera’s standard interface:
+
+```solidity
+interface ITrap {
+    function collect() external view returns (bytes memory);
+    function shouldRespond(bytes[] calldata data) external returns (bool, bytes memory);
+}
+```
+
+---
+
+## 🧪 Dummy `collect()`
+
+By default, `collect()` returns placeholder logs:
+
+```solidity
+TransferEvent[] memory dummyTransfers;
+// filled with mocked values for testing
+```
+
+Replace this with real log data from shadowfork or on-chain scans as needed.
+
+---
+
+## 🛠️ Deployment Notes
+
+### Replace NFT Address
+
+```solidity
+nftContract = 0x1234567890abcdef1234567890abcdef12345678; // replace before deploy
+```
+
+### Foundry Deployment
 
 ```bash
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
-
-# The trap-foundry-template utilizes node modules for dependency management
-# install Bun (optional)
-curl -fsSL https://bun.sh/install | bash
-
-# install node modules
-bun install
-
-# install vscode (optional)
-# - add solidity extension JuanBlanco.solidity
-
-# install drosera-cli
-curl -L https://app.drosera.io/install | bash
-droseraup
+forge script script/DeployNFTFlipTrap.s.sol \
+  --rpc-url $HOLESKY_RPC_URL \
+  --private-key $PRIVATE_KEY \
+  --broadcast
 ```
 
-open the VScode preferences and Select `Soldity: Change workpace compiler version (Remote)`
+---
 
-Select version `0.8.12`
+## 📜 License
 
-## Quick Start
+MIT
 
-### Hello World Trap
+---
 
-The drosera.toml file is configured to deploy a simple "Hello, World!" trap. Ensure the drosera.toml file is set to the following configuration:
+## 🤝 Credits
 
-```toml
-response_contract = "0xdA890040Af0533D98B9F5f8FE3537720ABf83B0C"
-response_function = "helloworld(string)"
-```
-
-To deploy the trap, run the following commands:
-
-```bash
-# Compile the Trap
-forge build
-
-# Deploy the Trap
-DROSERA_PRIVATE_KEY=0x.. drosera apply
-```
-
-After successfully deploying the trap, the CLI will add an `address` field to the `drosera.toml` file.
-
-Congratulations! You have successfully deployed your first trap!
-
-### Response Trap
-
-You can then update the trap by changing its logic and recompling it or changing the path field in the `drosera.toml` file to point to the Response Trap.
-
-The Response Trap is designed to trigger a response at a specific block number. To test the Response Trap, pick a future block number and update the Response Trap.
-Specify a response contract address and function signature in the drosera.toml file to the following:
-
-```toml
-response_contract = "0x183D78491555cb69B68d2354F7373cc2632508C7"
-response_function = "responseCallback(uint256)"
-```
-
-Finally, deploy the Response Trap by running the following commands:
-
-```bash
-# Compile the Trap
-forge build
-
-# Deploy the Trap
-DROSERA_PRIVATE_KEY=0x.. drosera apply
-```
-
-> Note: The `DROSERA_PRIVATE_KEY` environment variable can be used to deploy traps. You can also set it in the drosera.toml file as `private_key = "0x.."`.
-
-## Testing
-
-Example tests are included in the `tests` directory. They simulate how Drosera Operators execute traps and determine if a response should be triggered. To run the tests, execute the following command:
-
-```bash
-forge test
-```
+Developed for the Drosera Network trap ecosystem.
